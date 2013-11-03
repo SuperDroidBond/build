@@ -1580,10 +1580,9 @@ function validate_current_shell() {
             function check_type() { type -t "$1"; }
             ;;
         *zsh*)
-            function check_type() { type "$1"; }
-            add_zsh_completion ;;
+            ;;
         *)
-            echo -e "WARNING: Only bash and zsh are supported.\nUse of other shell would lead to erroneous results."
+            echo "WARNING: Only bash and zsh are supported, use of other shell may lead to erroneous results"
             ;;
     esac
 }
