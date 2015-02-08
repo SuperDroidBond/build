@@ -51,8 +51,24 @@ ifneq ($(filter-out false,$(USE_CCACHE)),)
   # See http://petereisentraut.blogspot.com/2011/09/ccache-and-clang-part-2.html
   CCACHE_CPP2 := true
 
-  ifndef CC_WRAPPER
-    CC_WRAPPER := $(CCACHE_EXEC)
+  # Detect if the system already has ccache installed to use instead of the prebuilt
+  ccache := $(shell which ccache)
+
+  ifeq ($(ccache),)
+    CCACHE_HOST_TAG := $(HOST_PREBUILT_TAG)
+    ccache := prebuilts/misc/$(CCACHE_HOST_TAG)/ccache/ccache
+  endif
+
+  # Check that the executable is here.
+  ccache := $(strip $(wildcard $(ccache)))
+  ifdef ccache
+    ifndef CC_WRAPPER
+      CC_WRAPPER := $(ccache)
+    endif
+    ifndef CXX_WRAPPER
+      CXX_WRAPPER := $(ccache)
+    endif
+    ccache =
   endif
   ifndef CXX_WRAPPER
     CXX_WRAPPER := $(CCACHE_EXEC)
