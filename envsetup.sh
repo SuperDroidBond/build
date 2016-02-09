@@ -1567,25 +1567,25 @@ function atest()
     "$(gettop)"/tools/tradefederation/core/atest/atest.py "$@"
 }
 
-# Zsh needs bashcompinit called to support bash-style completion.
-function add_zsh_completion() {
-    autoload -U compinit && compinit
-    autoload -U bashcompinit && bashcompinit
-}
-
-function validate_current_shell() {
-    local current_sh="$(ps -o command -p $$)"
-    case "$current_sh" in
+function __detect_shell() {
+    case `ps -o command -p $$` in
         *bash*)
-            function check_type() { type -t "$1"; }
+            echo bash
             ;;
         *zsh*)
+            echo zsh
             ;;
         *)
-            echo "WARNING: Only bash and zsh are supported, use of other shell may lead to erroneous results"
+            echo unknown
+            return 1
             ;;
     esac
+    return
 }
+
+if ! __detect_shell > /dev/null; then
+    echo "WARNING: Only bash and zsh are supported, use of other shell may lead to erroneous results"
+fi
 
 # Execute the contents of any vendorsetup.sh files we can find.
 function source_vendorsetup() {
