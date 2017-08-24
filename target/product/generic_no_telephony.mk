@@ -14,11 +14,51 @@
 # limitations under the License.
 #
 
-# This product is a generic phone or tablet, that doesn't have telephony.
-#
-# Note: Do not add any contents directly to this file. Choose either
-# handheld_system or handheld_vendor depending on partition (also consider
-# base_<x>.mk or media_<x>.mk.
+# This is a generic phone product that isn't specialized for a specific device.
+# It includes the base Android platform.
+
+PRODUCT_PACKAGES := \
+    Bluetooth \
+    BluetoothMidiService \
+    Camera2 \
+    Gallery2 \
+    Music \
+    MusicFX \
+    OneTimeInitializer \
+    Provision \
+    SystemUI \
+    SysuiDarkThemeOverlay \
+    DisplayCutoutEmulationDoubleOverlay \
+    DisplayCutoutEmulationCornerOverlay \
+    DisplayCutoutEmulationTallOverlay \
+    EasterEgg \
+    WallpaperCropper
+
+PRODUCT_PACKAGES += \
+    clatd \
+    clatd.conf \
+    pppd \
+    screenrecord
+
+PRODUCT_PACKAGES += \
+    librs_jni \
+    libvideoeditor_jni \
+    libvideoeditor_core \
+    libvideoeditor_osal \
+    libvideoeditor_videofilters \
+    libvideoeditorplayer \
+
+PRODUCT_PACKAGES += \
+    audio.primary.default \
+    local_time.default \
+    vibrator.default \
+    power.default
+
+PRODUCT_COPY_FILES := \
+        frameworks/av/media/libeffects/data/audio_effects.conf:system/etc/audio_effects.conf
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.carrier=unknown
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/handheld_system.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/handheld_vendor.mk)
